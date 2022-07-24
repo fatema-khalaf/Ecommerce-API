@@ -62,7 +62,15 @@ class BrandsController extends Controller
      */
     public function update(UpdateBrandRequest $request, Brand $brand)
     {
-        //
+        $brand->update([
+            'brand_name_en' => $request->input('brand_name_en'),
+            'brand_name_ar' => $request->input('brand_name_ar'),
+            'brand_slug_en' => $this->makeSlug($request->brand_name_en),
+            'brand_slug_ar' => $this->makeSlug($request->brand_name_ar),
+            'brand_image' => $request->input('brand_image'),
+        ]);
+
+        return new BrandsResource($brand);
     }
 
     /**
