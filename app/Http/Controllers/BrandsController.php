@@ -6,9 +6,13 @@ use App\Models\Brand;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Http\Resources\BrandsResource;
+use App\Traits\SlugTrait;
+
+use Carbon\Carbon;
 
 class BrandsController extends Controller
 {
+    use SlugTrait;
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +31,15 @@ class BrandsController extends Controller
      */
     public function store(StoreBrandRequest $request)
     {
-        //
+        $brand = Brand::create([
+            'brand_name_en' => $request->input('brand_name_en'),
+            'brand_name_ar' => $request->input('brand_name_ar'),
+            'brand_slug_en' => $this->makeSlug($request->brand_name_en),
+            'brand_slug_ar' => $this->makeSlug($request->brand_name_ar),
+            'brand_image' => $request->input('brand_image'),
+            'created_at' => Carbon::now(),
+        ]);
+        return new BrandsResource($brand);           
     }
 
     /**
