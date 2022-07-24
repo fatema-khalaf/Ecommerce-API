@@ -17,7 +17,11 @@ class BrandFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'brand_name_en' => $this->faker->company,
+            'brand_name_ar' => $this->faker->company,
+            'brand_slug_en' => $this->faker->slug,
+            'brand_slug_ar' => $this->faker->slug,
+            'brand_image'   => $this->faker->sha1
         ];
     }
 }
