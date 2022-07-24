@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
+use App\Http\Resources\BrandsResource;
 
 class BrandsController extends Controller
 {
@@ -15,7 +16,7 @@ class BrandsController extends Controller
      */
     public function index()
     {
-        //
+        return 'hi';
     }
 
     /**
@@ -47,7 +48,7 @@ class BrandsController extends Controller
      */
     public function show(Brand $brand)
     {
-        //
+        return new BrandsResource($brand);
     }
 
     /**
