@@ -16,17 +16,7 @@ class BrandsController extends Controller
      */
     public function index()
     {
-        return 'hi';
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return BrandsResource::collection(Brand::all());
     }
 
     /**
@@ -49,17 +39,6 @@ class BrandsController extends Controller
     public function show(Brand $brand)
     {
         return new BrandsResource($brand);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Brand  $brand
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Brand $brand)
-    {
-        //
     }
 
     /**

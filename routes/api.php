@@ -9,5 +9,7 @@ use App\Http\Controllers\BrandsController;
 // });
 
 Route::prefix('v1')->group(function(){
+
+    //Brands endpoints
     Route::apiResource('brands', BrandsController::class);
 });
