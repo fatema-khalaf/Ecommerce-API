@@ -16,9 +16,6 @@ Route::prefix('v1')->group(function(){
     Route::apiResource('brands', BrandsController::class);
 
     //Categories endpoints
-    //get categories with subcategories
-    // TODO: create nested routes instead of this 👇 route ex: Route::resource('category.subs', CategoriesSubsController::class);
-    Route::get('categories/{subcategories?}', [CategoriesController::class, 'index']);
     Route::apiResource('categories', CategoriesController::class);
     
     //Subcategories endpoints

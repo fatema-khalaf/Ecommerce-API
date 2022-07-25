@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoriesResource;
 use App\Traits\SlugTrait;
+use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
@@ -16,15 +17,19 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index( $subcategories = null)
+    public function index( Request $request)
     {
-        if($subcategories){
-            $categories = Category::with(['subcategories'])->get();
-        }else{
-            $categories = Category::get();
-        }
+        //If request has, include subcategories param use 'subcategories' model relationship method
+        $categories = Category::when(request('include') == 'subcategories', function ($query) {
+            return $query->with(['subcategories']);
+        })->get();
+
+        // if($request->include == 'subcategories'){
+        //     $categories = Category::with(['subcategories'])->get();
+        // }else{
+        //     $categories = Category::get();
+        // }
         return CategoriesResource::collection($categories);
-        // return CategoriesResource::collection(Category::all());
     }
     /**
      * Store a newly created resource in storage.
@@ -47,8 +52,12 @@ class CategoriesController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(Request $request, Category $category)
     {
+        //If request has, include subcategories param use 'subcategories' model relationship method
+        request('include') == 'subcategories' ?
+            $category = $category->load(['subcategories']):
+            $category;
         return new CategoriesResource($category);
     }
 
