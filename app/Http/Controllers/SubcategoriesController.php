@@ -18,7 +18,11 @@ class SubcategoriesController extends Controller
      */
     public function index()
     {
-        //
+        //This to display category data with each subcategory 
+        // $subcategories = Subcategory::with(['category'])->get();
+        // return SubcategoriesResource::collection($subcategories);
+        //This without category data
+        return SubcategoriesResource::collection(Subcategory::all());
     }
 
     /**
@@ -44,30 +48,23 @@ class SubcategoriesController extends Controller
      */
     public function show(Subcategory $subcategory)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Subcategory  $subcategory
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Subcategory $subcategory)
-    {
-        //
+        return new SubcategoriesResource($subcategory);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSubcategoryRequest  $request
+     * @param  \App\Http\Requests\SubcategoryRequest  $request
      * @param  \App\Models\Subcategory  $subcategory
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSubcategoryRequest $request, Subcategory $subcategory)
+    public function update(SubcategoryRequest $request, Subcategory $subcategory)
     {
-        //
+        $subcategory->update(array_merge($request->validated(),[
+            'subcategory_slug_en' => $this->makeSlug($request->subcategory_name_en),
+            'subcategory_slug_ar' => $this->makeSlug($request->subcategory_name_ar),
+        ]));
+        return new SubcategoriesResource($subcategory); 
     }
 
     /**
@@ -78,6 +75,7 @@ class SubcategoriesController extends Controller
      */
     public function destroy(Subcategory $subcategory)
     {
-        //
+        $subcategory->delete();
+        return response(null, 204);
     }
 }

@@ -22,8 +22,12 @@ class SubcategoriesResource extends JsonResource
                 'subcategory_name_ar' => $this->subcategory_name_ar,
                 'subcategory_slug_en' => $this->subcategory_slug_en,
                 'subcategory_slug_ar' => $this->subcategory_slug_ar,
+                'category_id' => $this->category_id,
+                //whenLoaded means if it is reqested with category show category else show nothing
+                'category' => new CategoriesResource($this->whenLoaded('category')), 
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
+
             ]   
         ];    
     }
