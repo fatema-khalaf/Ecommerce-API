@@ -16,11 +16,16 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( $subcategories = null)
     {
-        return CategoriesResource::collection(Category::all());
+        if($subcategories){
+            $categories = Category::with(['subcategories'])->get();
+        }else{
+            $categories = Category::get();
+        }
+        return CategoriesResource::collection($categories);
+        // return CategoriesResource::collection(Category::all());
     }
-
     /**
      * Store a newly created resource in storage.
      *
