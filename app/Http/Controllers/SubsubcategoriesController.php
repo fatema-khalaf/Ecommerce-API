@@ -19,9 +19,7 @@ class SubsubcategoriesController extends Controller
     public function index(Request $request)
     {
         $include_arr = explode (",", $request->include); 
-        $subsubcategories = Subsubcategory::when(in_array('category',$include_arr) , function ($query) {
-            return $query->with(['category']);
-        })->when(in_array('subcategory',$include_arr), function ($query) {
+        $subsubcategories = Subsubcategory::when(request('include') == 'subcategory' , function ($query) {
             return $query->with(['subcategory']);
         })->get();
 
@@ -51,11 +49,7 @@ class SubsubcategoriesController extends Controller
      */
     public function show(Subsubcategory $subsubcategory, Request $request)
     {
-        $include_arr = explode (",", $request->include);
-        in_array('category', $include_arr) ?
-            $subsubcategory = $subsubcategory->load(['category']): // load means use the relationship method
-            $subsubcategory;
-        in_array('subcategory', $include_arr) ?
+        request('include') == 'subcategory' ?
             $subsubcategory = $subsubcategory->load(['subcategory']): 
             $subsubcategory;
         return new SubsubcategoriesResource($subsubcategory);

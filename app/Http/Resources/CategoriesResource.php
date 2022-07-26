@@ -23,9 +23,10 @@ class CategoriesResource extends JsonResource
                 'category_slug_en' => $this->category_slug_en,
                 'category_slug_ar' => $this->category_slug_ar,
                 'category_icon' => $this->category_icon,
-                'subcategries' => SubcategoriesResource::collection($this->whenLoaded('subcategories')),
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
+                'subcategries' => SubcategoriesResource::collection($this->whenLoaded('subcategories')),
+                'subsubcategries' => SubsubcategoriesResource::collection($this->whenLoaded('subsubcategories')),
             ],
             // "relationships" => [
             //     "subcategories" => [

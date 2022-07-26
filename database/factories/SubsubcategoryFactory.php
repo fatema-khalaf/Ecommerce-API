@@ -17,7 +17,6 @@ class SubsubcategoryFactory extends Factory
     public function definition()
     {
         return [
-            'category_id' => \App\Models\Category::all()->random()->id, // choose a random id from categories id
             'subcategory_id' => \App\Models\Subcategory::all()->random()->id, // choose a random id from categories id
             'subsubcategory_name_en' => $this->faker->unique->word,
             'subsubcategory_name_ar' => $this->faker->unique->word,

@@ -22,11 +22,9 @@ class SubsubcategoriesResource extends JsonResource
                 'subsubcategory_name_ar' => $this->subsubcategory_name_ar,
                 'subsubcategory_slug_en' => $this->subsubcategory_slug_en,
                 'subsubcategory_slug_ar' => $this->subsubcategory_slug_ar,
-                'category_id' => $this->category_id,
                 'subcategory_id' => $this->subcategory_id,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
-                'category' => new CategoriesResource($this->whenLoaded('category')), 
                 'subcategory' => new SubcategoriesResource($this->whenLoaded('subcategory')), 
             ]   
         ];  

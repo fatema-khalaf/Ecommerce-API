@@ -20,8 +20,11 @@ class CategoriesController extends Controller
     public function index( Request $request)
     {
         //If request has, include subcategories param use 'subcategories' model relationship method
-        $categories = Category::when(request('include') == 'subcategories', function ($query) {
+        $include_arr = explode (",", $request->include); 
+        $categories = Category::when(in_array('subcategories',$include_arr), function ($query) {
             return $query->with(['subcategories']);
+        })->when(in_array('subsubcategories',$include_arr), function ($query) {
+            return $query->with(['subsubcategories']);
         })->get();
 
         // if($request->include == 'subcategories'){
@@ -54,9 +57,15 @@ class CategoriesController extends Controller
      */
     public function show(Request $request, Category $category)
     {
+        
+        $include_arr = explode (",", $request->include); 
+        
         //If request has, include subcategories param use 'subcategories' model relationship method
-        request('include') == 'subcategories' ?
-            $category = $category->load(['subcategories']):
+        in_array('subcategories', $include_arr)?
+        $category = $category->load(['subcategories']):
+        $category;
+        in_array('subsubcategories', $include_arr)?
+            $category = $category->load(['subsubcategories']):
             $category;
         return new CategoriesResource($category);
     }
