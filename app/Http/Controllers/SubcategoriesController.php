@@ -7,6 +7,7 @@ use App\Http\Requests\SubcategoryRequest;
 use App\Http\Requests\UpdateSubcategoryRequest;
 use App\Http\Resources\SubcategoriesResource;
 use App\Traits\SlugTrait;
+use Illuminate\Http\Request;
 
 class SubcategoriesController extends Controller
 {
@@ -16,13 +17,14 @@ class SubcategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //This to display category data with each subcategory 
-        // $subcategories = Subcategory::with(['category'])->get();
-        // return SubcategoriesResource::collection($subcategories);
-        //This without category data
-        return SubcategoriesResource::collection(Subcategory::all());
+        
+        $subcategories = Subcategory::when(request('include') == 'category', function ($query) {
+            return $query->with(['category']);
+        })->get();
+
+        return SubcategoriesResource::collection($subcategories);
     }
 
     /**
@@ -48,6 +50,9 @@ class SubcategoriesController extends Controller
      */
     public function show(Subcategory $subcategory)
     {
+        request('include') == 'category' ?
+            $subcategory = $subcategory->load(['category']): // load means use the relationship method
+            $subcategory;
         return new SubcategoriesResource($subcategory);
     }
 
