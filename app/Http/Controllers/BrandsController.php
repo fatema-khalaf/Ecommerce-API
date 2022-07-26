@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
-use App\Http\Requests\StoreBrandRequest;
-use App\Http\Requests\UpdateBrandRequest;
+use App\Http\Requests\BrandRequest;
 use App\Http\Resources\BrandsResource;
 use App\Traits\SlugTrait;
 
@@ -26,10 +25,10 @@ class BrandsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBrandRequest  $request
+     * @param  \App\Http\Requests\BrandRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBrandRequest $request)
+    public function store(BrandRequest $request)
     {    
         $brand = Brand::create(array_merge($request->validated(),[
             'brand_slug_en' => $this->makeSlug($request->brand_name_en),
@@ -52,11 +51,11 @@ class BrandsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBrandRequest  $request
+     * @param  \App\Http\Requests\BrandRequest  $request
      * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBrandRequest $request, Brand $brand)
+    public function update(BrandRequest $request, Brand $brand)
     {
         $brand->update(array_merge($request->validated(),[
             'brand_slug_en' => $this->makeSlug($request->brand_name_en),
