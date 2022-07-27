@@ -6,6 +6,7 @@ use App\Http\Controllers\BrandsController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\SubcategoriesController;
 use App\Http\Controllers\SubsubcategoriesController;
+use App\Http\Controllers\ProductsController;
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
@@ -24,4 +25,7 @@ Route::prefix('v1')->group(function(){
     
     //Subsubcategories endpoints
     Route::apiResource('subsubcategories', SubsubcategoriesController::class);
+    
+    //Products endpoints
+    Route::apiResource('products', ProductsController::class);
 });
