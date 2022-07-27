@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\SubcategoriesController;
 use App\Http\Controllers\SubsubcategoriesController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ProductImagesController;
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
@@ -28,4 +29,6 @@ Route::prefix('v1')->group(function(){
     
     //Products endpoints
     Route::apiResource('products', ProductsController::class);
+    Route::apiResource('products.images', ProductImagesController::class);
+
 });
