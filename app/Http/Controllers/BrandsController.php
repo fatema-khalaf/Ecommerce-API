@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Http\Requests\BrandRequest;
 use App\Http\Resources\BrandsResource;
 use App\Traits\SlugTrait;
+use Image;
 
 use Carbon\Carbon;
 
@@ -29,8 +30,17 @@ class BrandsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(BrandRequest $request)
-    {    
+    {               
+        $request->validate([
+            'brand_image' => 'required|image'
+        ]);
+        $image = $request->file('brand_image');
+        $name_gen =
+        hexdec(uniqid()) . "." . $image->getClientOriginalExtension();
+        Image::make($image)->save('api/v1/upload/brands/' . $name_gen);
+
         $brand = Brand::create(array_merge($request->validated(),[
+            'brand_image' => '/api/v1/upload/brands/' . $name_gen,
             'brand_slug_en' => $this->makeSlug($request->brand_name_en),
             'brand_slug_ar' => $this->makeSlug($request->brand_name_ar),
         ]));
