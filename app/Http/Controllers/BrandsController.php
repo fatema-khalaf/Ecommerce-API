@@ -41,7 +41,7 @@ class BrandsController extends Controller
         unset($validatedValues['brand_image']);
 
         $brand = Brand::create(array_merge($validatedValues,[
-            'brand_image' => '/api/v1/upload/brands/' . $name_gen,
+            'brand_image' => '/upload/brands/' . $name_gen,
             'brand_slug_en' => $this->makeSlug($request->brand_name_en),
             'brand_slug_ar' => $this->makeSlug($request->brand_name_ar),
         ]));
