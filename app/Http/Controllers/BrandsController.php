@@ -31,15 +31,16 @@ class BrandsController extends Controller
      */
     public function store(BrandRequest $request)
     {               
-        $request->validate([
-            'brand_image' => 'required|image'
-        ]);
         $image = $request->file('brand_image');
         $name_gen =
         hexdec(uniqid()) . "." . $image->getClientOriginalExtension();
         Image::make($image)->save('api/v1/upload/brands/' . $name_gen);
+   
+        //remove image name from validated array
+        $validatedValues = $request->validated(); 
+        unset($validatedValues['brand_image']);
 
-        $brand = Brand::create(array_merge($request->validated(),[
+        $brand = Brand::create(array_merge($validatedValues,[
             'brand_image' => '/api/v1/upload/brands/' . $name_gen,
             'brand_slug_en' => $this->makeSlug($request->brand_name_en),
             'brand_slug_ar' => $this->makeSlug($request->brand_name_ar),

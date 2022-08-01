@@ -26,6 +26,7 @@ class BrandRequest extends FormRequest
         return [
             'brand_name_en' => 'required|unique:brands|max:255',
             'brand_name_ar' => 'required|unique:brands|max:255',
+            'brand_image' => 'required|image'
         ];
     }
   
