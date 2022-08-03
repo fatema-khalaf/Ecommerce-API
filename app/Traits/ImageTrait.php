@@ -14,11 +14,7 @@ trait ImageTrait{
     }
 
     function updateImage($oldImage ,$newImage, $folder){
-
-        // $imgNameArray = explode("/",$oldImage);
-        // $imgName = end($imgNameArray);
-        unlink( 'api/v1'.$oldImage);
-        
+        @unlink('api/v1'.$oldImage); // @ means if the file exist delete it, if not skip this line 
         $name_gen = hexdec(uniqid()) . hexdec(uniqid())  ."." . $newImage->getClientOriginalExtension();
         Image::make($newImage)->resize(1017, 1000)->save('api/v1/upload/'.$folder.'/' . $name_gen);
         $saveName = '/upload/'.$folder.'/'.$name_gen;

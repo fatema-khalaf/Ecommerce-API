@@ -71,24 +71,25 @@ class BrandsController extends Controller
     {
         if($request->file('brand_image')){
             $oldImage = $brand->brand_image;
-           
             // get image from request    
             $newImage = $request->file('brand_image');
             // save image in brands folder
             $imageName = $this->updateImage($oldImage ,$newImage,'brands');
-            // return $imageName;
+            $brand->update(array_merge($request->validated(),[
+                'brand_image' => $imageName,
+                'brand_slug_en' => $this->makeSlug($request->brand_name_en),
+                'brand_slug_ar' => $this->makeSlug($request->brand_name_ar),
+            ]));
         }
         if(!$request->file('brand_image')){
-            $imageName = $request->brand_image;
-            // return $imageName;
+            $brand->update(array_merge($request->validated(),[
+                'brand_slug_en' => $this->makeSlug($request->brand_name_en),
+                'brand_slug_ar' => $this->makeSlug($request->brand_name_ar),
+            ]));
         }
         
 
-        $brand->update(array_merge($request->validated(),[
-            'brand_image' => $imageName,
-            'brand_slug_en' => $this->makeSlug($request->brand_name_en),
-            'brand_slug_ar' => $this->makeSlug($request->brand_name_ar),
-        ]));
+       
         return new BrandsResource($brand);
     }
 
