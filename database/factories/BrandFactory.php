@@ -21,7 +21,7 @@ class BrandFactory extends Factory
             'brand_name_ar' => $this->faker->company,
             'brand_slug_en' => $this->faker->slug,
             'brand_slug_ar' => $this->faker->slug,
-            'brand_image'   => $this->faker->sha1
+            'brand_image'   => '/upload/brands/17401382410466511740138241046653.jpg'
         ];
     }
 }

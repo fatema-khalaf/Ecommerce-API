@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use App\Http\Requests\BrandRequest;
+use App\Http\Requests\UpdateBrandRequest;
 use App\Http\Resources\BrandsResource;
 use App\Traits\SlugTrait;
-use Image;
+use App\Traits\ImageTrait;
 
 use Carbon\Carbon;
 
 class BrandsController extends Controller
 {
     use SlugTrait;
+    use ImageTrait;
     /**
      * Display a listing of the resource.
      *
@@ -30,18 +32,17 @@ class BrandsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(BrandRequest $request)
-    {               
+    {           
+        // get image from request    
         $image = $request->file('brand_image');
-        $name_gen =
-        hexdec(uniqid()) . "." . $image->getClientOriginalExtension();
-        Image::make($image)->save('api/v1/upload/brands/' . $name_gen);
-   
+        // save image in brands folder
+        $imageName = $this->saveImage($image,'brands');
         //remove image name from validated array
         $validatedValues = $request->validated(); 
         unset($validatedValues['brand_image']);
 
         $brand = Brand::create(array_merge($validatedValues,[
-            'brand_image' => '/upload/brands/' . $name_gen,
+            'brand_image' => $imageName,
             'brand_slug_en' => $this->makeSlug($request->brand_name_en),
             'brand_slug_ar' => $this->makeSlug($request->brand_name_ar),
         ]));
@@ -62,13 +63,29 @@ class BrandsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\BrandRequest  $request
+     * @param  \App\Http\Requests\UpdateBrandRequest  $request
      * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function update(BrandRequest $request, Brand $brand)
+    public function update(UpdateBrandRequest $request, Brand $brand)
     {
+        if($request->file('brand_image')){
+            $oldImage = $brand->brand_image;
+           
+            // get image from request    
+            $newImage = $request->file('brand_image');
+            // save image in brands folder
+            $imageName = $this->updateImage($oldImage ,$newImage,'brands');
+            // return $imageName;
+        }
+        if(!$request->file('brand_image')){
+            $imageName = $request->brand_image;
+            // return $imageName;
+        }
+        
+
         $brand->update(array_merge($request->validated(),[
+            'brand_image' => $imageName,
             'brand_slug_en' => $this->makeSlug($request->brand_name_en),
             'brand_slug_ar' => $this->makeSlug($request->brand_name_ar),
         ]));
