@@ -9,17 +9,20 @@ use App\Http\Controllers\SubsubcategoriesController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProductImagesController;
 use App\Http\Controllers\auth\LoginController;
+use App\Http\Controllers\AdminsController;
 
 
-Route::get('/test', function(Request $request){
-    return 'Authenticated';
-});
-
+// Protect routes for only logged in users
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+// Login as user 
+Route::post('/login', [LoginController::class, 'login']);
 
-Route::post('/login', [LoginController::class, 'loginWithRefreshToken']);
+// Login as admin
+Route::post('admin/login', [LoginController::class, 'adminLogin']);
+
+
 
 Route::prefix('v1')->group(function(){
 
