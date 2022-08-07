@@ -8,6 +8,7 @@ use App\Http\Controllers\SubcategoriesController;
 use App\Http\Controllers\SubsubcategoriesController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProductImagesController;
+use App\Http\Controllers\auth\LoginController;
 
 
 Route::get('/test', function(Request $request){
@@ -17,6 +18,8 @@ Route::get('/test', function(Request $request){
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/login', [LoginController::class, 'loginWithRefreshToken']);
 
 Route::prefix('v1')->group(function(){
 
