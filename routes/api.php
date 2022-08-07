@@ -12,7 +12,7 @@ use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\AdminsController;
 
 
-// Protect routes for only logged in users
+// Protected routes for only logged in users
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -25,6 +25,11 @@ Route::post('admin/login', [LoginController::class, 'adminLogin']);
 
 
 Route::prefix('v1')->group(function(){
+
+    // Admins endpoints
+    Route::apiResource('admins', AdminsController::class);
+    // Admin change Password
+    Route::put('admins/change-password/{admin}', [AdminsController::class, 'changePassword']);
 
     //Brands endpoints
     Route::apiResource('brands', BrandsController::class);
