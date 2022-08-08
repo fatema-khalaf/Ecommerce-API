@@ -40,13 +40,22 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'api' => [
-            'driver' => 'passport',
-            'provider' => 'users',
-            'hash' => false
-        ],
+        // 'api' => [
+        //     'driver' => 'passport',
+        //     'provider' => 'users',
+        //     'hash' => false
+        // ],
         // create admins guards to be able to use "Auth::guard('admins')->attempt()" function in file LoginController 
         // because driver paeeport dose NOT support some methods
+        'user' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+    
+        'user-api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+        ],
         'admins' => [
             'driver' => 'session',
             'provider' => 'admins',

@@ -16,6 +16,12 @@ use App\Http\Controllers\AdminsController;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group( ['prefix' => 'v1','middleware' => ['auth:api-admins','scope:admin'] ],function(){
+    Route::apiResource('brands', BrandsController::class);
+ });
+ 
+
 // Login as user 
 Route::post('/login', [LoginController::class, 'login']);
 
@@ -41,7 +47,7 @@ Route::prefix('v1')->group(function(){
     Route::put('admins/change-password/{admin}', [AdminsController::class, 'changePassword']);
 
     //Brands endpoints
-    Route::apiResource('brands', BrandsController::class);
+    // Route::apiResource('brands', BrandsController::class);
 
     //Categories endpoints
     Route::apiResource('categories', CategoriesController::class);

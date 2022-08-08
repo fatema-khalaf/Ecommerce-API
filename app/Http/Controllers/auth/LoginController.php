@@ -18,7 +18,7 @@ class LoginController extends Controller
             return response(['message'=> 'invalid login credantials']);
         }
 
-        $accessToken = Auth::user()->createToken('authToken')->accessToken;
+        $accessToken = Auth::user()->createToken('authToken',['user'])->accessToken;
         return response(['user'=>Auth::user(), 'access_token' => $accessToken]);
     }
 
@@ -31,7 +31,7 @@ class LoginController extends Controller
             return response(['message'=> 'invalid login credantials']);
         }
 
-        $accessToken = Auth::guard('admins')->user()->createToken('authToken')->accessToken;
+        $accessToken = Auth::guard('admins')->user()->createToken('authToken',['admin'])->accessToken;
         return response(['user'=>Auth::guard('admins')->user(), 'access_token' => $accessToken]);
     }
 
