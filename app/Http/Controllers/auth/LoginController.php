@@ -35,8 +35,18 @@ class LoginController extends Controller
         return response(['user'=>Auth::guard('admins')->user(), 'access_token' => $accessToken]);
     }
 
+    public function logout(Request $request)
+    {
+         $request->user()->token()->revoke();
+         return response()->json([
+           'message' => 'Successfully logged out']);
+    }
+    
+    // TODO: USE THE BELOW FUNCTION TO RECREATE OAUTH TOKENS
+    // THE ISSUE WITH THIS METHOD 👇 IS IT ONLY MAKE REQUEST ON USERS TABLE 
+    // I WANT IT TO MAKE REQUEST ON BOTH USERS AND ADMINS TABLES
+
     // public function loginWithRefreshToken(Request $request){
-    //     // TODO: Add validation and return validation error message
     //     $response = Http::asForm()->post('http://127.0.0.1:8000/oauth/token', [
     //         'grant_type' => 'password',
     //         'client_id' => '2',

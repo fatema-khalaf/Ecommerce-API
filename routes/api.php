@@ -22,6 +22,15 @@ Route::post('/login', [LoginController::class, 'login']);
 // Login as admin
 Route::post('admin/login', [LoginController::class, 'adminLogin']);
 
+// Protected routes for only logged in admins
+Route::middleware('auth:api-admins')->prefix('admin')->group(function(){
+    Route::post('logout', [LoginController::class, 'logout']);
+    Route::get('', function(Request $request){
+        return $request->user();
+    });
+});
+
+
 
 
 Route::prefix('v1')->group(function(){
