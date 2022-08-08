@@ -53,7 +53,7 @@ return [
         ],
     
         'user-api' => [
-            'driver' => 'token',
+            'driver' => 'passport',
             'provider' => 'users',
         ],
         'admins' => [
