@@ -8,15 +8,15 @@ use App\Http\Controllers\SubcategoriesController;
 use App\Http\Controllers\SubsubcategoriesController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProductImagesController;
-use App\Http\Controllers\auth\LoginController;
+use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\AdminsController;
 
 // Login as admin
 // Access and refresh tokens
-// Route::middleware('admin.model')->post('admin/login', [LoginController::class, 'Login']);
+// Route::middleware('admin.model')->post('admin/login', [AuthController::class, 'Login']);
 
 // Personal access token
-Route::post('admin/login', [LoginController::class, 'adminLogin']);
+Route::post('admin/login', [AuthController::class, 'adminLogin']);
 
 
 // Protected routes for only logged in admins with scop admin
@@ -29,7 +29,7 @@ Route::middleware('auth:api-admins','scope:admin')->group(function(){
     // Admin change Password
     Route::put('admins/change-password/{admin}', [AdminsController::class, 'changePassword']);
     // Admin logout
-    Route::post('admin/logout', [LoginController::class, 'logout']);    
+    Route::post('admin/logout', [AuthController::class, 'logout']);    
     
     //Brands endpoints
     Route::apiResource('brands', BrandsController::class);

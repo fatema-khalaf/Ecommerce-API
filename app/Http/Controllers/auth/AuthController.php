@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 
-class LoginController extends Controller
+class AuthController extends Controller
 {
     // This function 👇👇 returns personal access token without refresh token
     // Login Admin
@@ -19,7 +19,7 @@ class LoginController extends Controller
         ]);
         
         if(!Auth::guard('admins')->attempt($login)){
-            return response(['message'=> 'Invalid Email or Password']);
+            return response(['message'=> 'Invalid Email or Password'], 422);
         }
 
         $Token = Auth::guard('admins')->user()->createToken('authToken',['admin']);
@@ -50,7 +50,8 @@ class LoginController extends Controller
     // Logout user and admins
     public function logout(Request $request)
     {
-         $request->user()->token()->revoke();
+        //  $request->user()->token()->revoke();
+         $request->user()->token()->delete();
          return response()->json([
            'message' => 'Successfully logged out']);
     }
