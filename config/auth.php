@@ -48,25 +48,20 @@ return [
         ],
         // create admins guards to be able to use "Auth::guard('admins')->attempt()" function in file LoginController 
         // because driver paeeport dose NOT support some methods
-        // 'user' => [
-        //     'driver' => 'session',
-        //     'provider' => 'users',
-        // ],
-    
-        // 'user-api' => [
-        //     'driver' => 'passport',
-        //     'provider' => 'users',
-        // ],
-        // 'admins' => [
-        //     'driver' => 'session',
-        //     'provider' => 'users',
-        //     'hash' => false,
-        // ],
-        // 'api-admins' => [
-        //     'driver' => 'passport',
-        //     'provider' => 'users',
-        //     'hash' => false
-        // ],
+        'users' => [
+            'driver' => 'session',
+            'provider' => 'users',
+            
+        ],
+        'admins' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+        'api-admins' => [
+            'driver' => 'passport',
+            'provider' => 'admins',
+            'hash' => false
+        ],
     ],
 
     /*
@@ -91,10 +86,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        // 'admins' => [
-        //     'driver' => 'eloquent',
-        //     'model' => App\Models\Admin::class,
-        // ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
