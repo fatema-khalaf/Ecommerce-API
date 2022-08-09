@@ -30,7 +30,7 @@ class AuthController extends Controller
         
         $accessToken = $Token->accessToken;
 
-        return response(['user'=>Auth::guard('admins')->user(), 'access_token' => $accessToken]);
+        return response(['user'=>Auth::guard('admins')->user(), 'access_token' => $accessToken])->withCookie(cookie('accesstoken', $accessToken, 500000));
     }
 
     // Login user
