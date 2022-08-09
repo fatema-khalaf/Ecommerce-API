@@ -25,6 +25,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         Passport::routes();
+        Passport::tokensExpireIn(now()->addDays(15)); // Todo: make this line works only if user check remember me button
+
         Passport::tokensCan([
             'user' => 'User Type',
             'admin' => 'Admin User Type',

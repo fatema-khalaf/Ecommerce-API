@@ -11,19 +11,21 @@ use App\Http\Controllers\ProductImagesController;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\AdminsController;
 
+// Protected rooutes 'isAdmin' => App\Http\Middleware\isAdmin::class,
 
-
-
-Route::group( ['middleware' => ['auth:api-admins','scope:admin'] ],function(){
+Route::group( ['middleware' => ['admin.config','scope:admin'] ],function(){
+    config(['auth.providers.users.model' => 'App\Models\Admin']); // TODO: make this line middleware
     Route::apiResource('brands', BrandsController::class);
  });
  
 
 // Login as admin
-Route::post('admin/login', [LoginController::class, 'adminLogin']);
+Route::middleware('admin.model')->post('admin/login', [LoginController::class, 'Login']);
 
-// Protected routes for only logged in admins
-Route::middleware('auth:api-admins')->prefix('admin')->group(function(){
+
+// Protected routes for only logged in admins with scop admin
+Route::middleware('auth:api','scope:admin')->prefix('admin')->group(function(){
+    config(['auth.providers.users.model' => 'App\Models\Admin']); // TODO: make this line middleware
     Route::post('logout', [LoginController::class, 'logout']);
     Route::get('', function(Request $request){
         return $request->user();

@@ -9,30 +9,30 @@ use Illuminate\Support\Facades\Http;
 
 class LoginController extends Controller
 {
-    public function login(Request $request){ // this function NOT in use
-       $login =  $request->validate([
-            'email' => 'required',
-            'password' => 'required'
-        ]);
-        if(!Auth::attempt($login)){
-            return response(['message'=> 'invalid login credantials']);
+    public function Login(Request $request){
+        try{
+            $request->request->add([
+                'grant_type' => 'password',
+                'client_id' => '2',
+                'client_secret' => 'IoW7K5LXOfTkBdqhg2ouNY9Cdc0n3wE8T75MUZmP',
+                'username' => $request->email,
+                'password' => $request->password,
+                'scope' => $request->scope_name ? $request->scope_name : 'user',
+            ]);
+    
+            $tokenRequest = $request->create(
+                'http://127.0.0.1:8000/oauth/token', //TODO: make this line dynamic
+                'post'
+            );
+            
+            $instance = \Route::dispatch($tokenRequest);
+    
+            return json_decode($instance->getContent());
+        }
+        catch(Exception $e){
+           return response($e);
         }
 
-        $accessToken = Auth::user()->createToken('authToken',['user'])->accessToken;
-        return response(['user'=>Auth::user(), 'access_token' => $accessToken]);
-    }
-
-    public function adminLogin(Request $request){ // this function NOT in use
-       $login =  $request->validate([
-            'email' => 'required',
-            'password' => 'required'
-        ]);
-        if(!Auth::guard('admins')->attempt($login)){
-            return response(['message'=> 'invalid login credantials']);
-        }
-
-        $accessToken = Auth::guard('admins')->user()->createToken('authToken',['admin'])->accessToken;
-        return response(['user'=>Auth::guard('admins')->user(), 'access_token' => $accessToken]);
     }
 
     public function logout(Request $request)
@@ -41,21 +41,19 @@ class LoginController extends Controller
          return response()->json([
            'message' => 'Successfully logged out']);
     }
-    
-    // TODO: USE THE BELOW FUNCTION TO RECREATE OAUTH TOKENS
-    // THE ISSUE WITH THIS METHOD 👇 IS IT ONLY MAKE REQUEST ON USERS TABLE 
-    // I WANT IT TO MAKE REQUEST ON BOTH USERS AND ADMINS TABLES
 
-    // public function loginWithRefreshToken(Request $request){
-    //     $response = Http::asForm()->post('http://127.0.0.1:8000/oauth/token', [
-    //         'grant_type' => 'password',
-    //         'client_id' => '2',
-    //         'client_secret' => 'IoW7K5LXOfTkBdqhg2ouNY9Cdc0n3wE8T75MUZmP',
-    //         'username' => $request->email,
-    //         'password' => $request->password,
-    //         'scope' => '',
+    // This function not in use 👇👇 This return personal access token without refresh token
+    // public function adminLogin(Request $request){
+    //    $login =  $request->validate([
+    //         'email' => 'required',
+    //         'password' => 'required'
     //     ]);
+    //     if(!Auth::guard('admins')->attempt($login)){
+    //         return response(['message'=> 'invalid login credantials']);
+    //     }
 
-    //     return $response;
+    //     $accessToken = Auth::guard('admins')->user()->createToken('authToken',['admin'])->accessToken;
+    //     return response(['user'=>Auth::guard('admins')->user(), 'access_token' => $accessToken]);
     // }
+     
 }
