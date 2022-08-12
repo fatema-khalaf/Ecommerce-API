@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
-
 class AuthController extends Controller
 {
     // This function 👇👇 returns personal access token without refresh token
@@ -29,8 +28,16 @@ class AuthController extends Controller
         // }
         
         $accessToken = $Token->accessToken;
-
-        return response(['user'=>Auth::guard('admins')->user(), 'access_token' => $accessToken])->withCookie(cookie('accesstoken', $accessToken, 500000));
+        // Add token as cookie
+        $cookie = \Symfony\Component\HttpFoundation\Cookie::create("loginToken")
+        ->withValue($accessToken)
+        ->withExpires(strtotime("+12 months"))
+        ->withSecure(true)
+        // ->withHttpOnly(true)
+        ->withSameSite("none")
+        ->withDomain(null) // this not working
+        ;
+        return response(['user'=>Auth::guard('admins')->user(), 'access_token' => $accessToken])->withCookie($cookie);
     }
 
     // Login user
