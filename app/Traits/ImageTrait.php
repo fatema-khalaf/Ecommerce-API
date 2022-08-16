@@ -6,9 +6,9 @@ use Image;
 
 trait ImageTrait{
 
-    function saveImage($image, $folder){
+    function saveImage($image, $folder, $width = 1017, $height=1000){
         $name_gen = hexdec(uniqid()) . hexdec(uniqid())  ."." . $image->getClientOriginalExtension();
-        Image::make($image)->resize(1017, 1000)->save('api/v1/upload/'.$folder.'/' . $name_gen);
+        Image::make($image)->resize($width, $height)->save('api/v1/upload/'.$folder.'/' . $name_gen);
         $saveName = '/upload/'.$folder.'/'.$name_gen;
         return $saveName;
     }
