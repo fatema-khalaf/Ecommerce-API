@@ -42,5 +42,18 @@ class Product extends Model
     {
         return $this->hasMany(Product_image::class, 'product_id');
     }
+    // public function brands()
+    // {
+    //     return $this->belo(Product_image::class, 'product_id');
+    // }
+    /**
+     * Get the brands that owns the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function brands()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
 
 }

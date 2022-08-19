@@ -42,6 +42,8 @@ class ProductsResource extends JsonResource
                 'long_descp_ar'  => $this->long_descp_ar,
                 'product_thambnail'  => $this->product_thambnail,
                 'product_images' => ProductImagesResource::collection($this->whenLoaded('images')), 
+                'brand_name_en' => $this->brand_name_en, 
+                'subsubcategory_name_en' => $this->subsubcategory_name_en, 
                 'hot_deals' => $this->hot_deals,
                 'featured' => $this->featured,
                 'special_offer' => $this->special_offer,

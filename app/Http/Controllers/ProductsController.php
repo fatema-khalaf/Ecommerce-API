@@ -23,7 +23,12 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::with(['images'])->get();
+        
+        $products = Product::with(['images'])
+        ->join('brands', 'brands.id', '=', 'products.brand_id')
+        ->join('subsubcategories', 'subsubcategories.id', '=','products.subsubcategory_id')
+        ->select('products.*','brands.brand_name_en', 'subsubcategories.subsubcategory_name_en')
+        ->get();
         return ProductsResource::collection($products);
     }
 
@@ -73,6 +78,10 @@ class ProductsController extends Controller
      */
     public function show(Product $product)
     {
+        $product = $product->join('brands', 'brands.id', '=', 'products.brand_id')
+        ->join('subsubcategories', 'subsubcategories.id', '=','products.subsubcategory_id')
+        ->select('products.*','brands.brand_name_en', 'subsubcategories.subsubcategory_name_en')
+        ->first();
         return new ProductsResource($product->load(['images']));
     }
 
