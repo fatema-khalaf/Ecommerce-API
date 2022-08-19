@@ -44,7 +44,6 @@ class ProductsController extends Controller
          //remove image name from validated array
          $validatedValues = $request->validated(); 
          unset($validatedValues['product_thambnail']);
-
         $product = Product::create(array_merge($validatedValues,[
             'category_id' => $category_id,
             'subcategory_id' => $subcategory_id,
@@ -88,13 +87,47 @@ class ProductsController extends Controller
     {
         $subcategory_id = Subsubcategory::findOrFail($request->subsubcategory_id)->subcategory_id;
         $category_id = Subcategory::findOrFail($subcategory_id)->category_id;
-        $product->update(array_merge($request->validated(),[
+        
+        //remove image name from validated array
+        $validatedValues = $request->validated(); 
+        unset($validatedValues['product_thambnail']);
+
+        $thambnail = $request->file('product_thambnail'); // get thambnail file
+        // if there is a file update
+        if($thambnail){
+            // save image in products folder
+            $imageName = $this->saveImage($thambnail,'products');
+    
+            $product->update(array_merge($validatedValues,[
+                'category_id' => $category_id,
+                'subcategory_id' => $subcategory_id,
+                'product_thambnail' => $imageName,
+                'status' => $request->status ? $request->status : 1,
+                'product_slug_en' => $this->makeSlug($request->product_name_en),
+                'product_slug_ar' => $this->makeSlug($request->product_name_ar),
+            ]));
+        }
+        // If no file $thambnail == null do not update Product_thambnail
+        $product->update(array_merge($validatedValues,[
             'category_id' => $category_id,
             'subcategory_id' => $subcategory_id,
             'status' => $request->status ? $request->status : 1,
             'product_slug_en' => $this->makeSlug($request->product_name_en),
             'product_slug_ar' => $this->makeSlug($request->product_name_ar),
         ]));
+
+        // Update product images
+        $images = $request->file('images');
+        if($images){
+            foreach ($images as $image) {
+                $imageName = $this->saveImage($image,'products');
+                Product_image::create([
+                    'product_id' => $product->id,
+                    'image_name' => $imageName
+                ]);
+            };
+        }
+            
         return new ProductsResource($product->load(['images'])); 
     }
 
