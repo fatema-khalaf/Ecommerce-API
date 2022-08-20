@@ -107,8 +107,15 @@ class AdminsController extends Controller
     {
         $validateData = $request->validate([ 
             'old_password' => 'required',
-            'password'=> 'required|confirmed'
-         ]);
+            'password'=> 'required|min:8|confirmed',
+            'password_confirmation' => 'required|min:8|same:password',
+        ],
+         [
+            'old_password.required' => 'The current password field is required!',
+            'password.confirmed' => 'Password confirmation failed!',
+            'password_confirmation.same' => 'Password confirmation failed!',
+        ]);
+
          $hashedPassword = $admin->password;
          
          if(Hash::check($request->old_password, $hashedPassword)){
