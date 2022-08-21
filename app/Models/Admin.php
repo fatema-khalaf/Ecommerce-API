@@ -17,6 +17,13 @@ class Admin extends Authenticatable
         'email',
         'photo',
         'phone',
+        'status',
+        'brand',
+        'product',
+        'orders',
+        'category',
+        'setting',
+        'newsletter',
         'password',
     ];
 

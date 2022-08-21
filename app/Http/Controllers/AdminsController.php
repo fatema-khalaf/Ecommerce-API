@@ -41,6 +41,13 @@ class AdminsController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'status' => $request->status ? $request->status : 1,
+            'brand' => $request->brand ? $request->brand : 0,
+            'category' => $request->category ? $request->category : 0,
+            'product' => $request->product ? $request->product : 0,
+            'orders' => $request->orders ? $request->orders : 0,
+            'setting' => $request->setting ? $request->setting : 0,
+            'newsletter' => $request->newsletter ? $request->newsletter : 0,
             'photo' => $imageName,
             'phone' => $request->phone,
         ]);
@@ -77,7 +84,14 @@ class AdminsController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'photo' => $imageName,
-                'phone' => $request->phone,    
+                'phone' => $request->phone,  
+                'status' => $request->status ,
+                'brand' => $request->brand ,  
+                'category' => $request->category,
+                'product' => $request->product ,
+                'orders' => $request->orders, 
+                'setting' => $request->setting ,
+                'newsletter' => $request->newsletter ,  
             ]);
         }
         if(!$request->file('photo')){

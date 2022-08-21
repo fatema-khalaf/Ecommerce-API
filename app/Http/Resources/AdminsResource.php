@@ -23,7 +23,14 @@ class AdminsResource extends JsonResource
                 'email' => $this->email,
                 'photo' => $this->photo,
                 'phone' => $this->phone,
-                'created_at' => $this->created_at,
+                'status' => $this->status,
+                'brand' => $this->brand,
+                'category' => $this->category,
+                'product' => $this->product,
+                'orders' => $this->orders,
+                'newsletter' => $this->newsletter,
+                'setting' => $this->setting,
+                'created_at' => $this->created_at->diffForHumans(),
                 'updated_at' => $this->updated_at,
             ]   
         ];
